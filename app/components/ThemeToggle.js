@@ -10,8 +10,8 @@ export function ThemeToggle() {
       variant="filled"
       size="xl"
       onClick={toggleColorScheme}
+      color="indigo"
       style={{ position: "absolute", top: 20, right: 20 }}
-      color="brand"
     >
       <IconSun className="theme-icon-sun" size="70%" />
       <IconMoon className="theme-icon-moon" size="70%" />

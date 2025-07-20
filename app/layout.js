@@ -1,12 +1,6 @@
 import "@mantine/core/styles.css";
-import {
-  MantineProvider,
-  ColorSchemeScript,
-  createTheme,
-  mantineHtmlProps,
-} from "@mantine/core";
+import { ColorSchemeScript, MantineProvider, createTheme } from "@mantine/core";
 import { Fredoka } from "next/font/google";
-
 import "./globals.css";
 
 const fredoka = Fredoka({
@@ -21,40 +15,47 @@ export const metadata = {
 };
 
 const theme = createTheme({
-  primaryColor: "brand",
+  primaryColor: "indigo",
   colors: {
-    brand: [
-      "#eef1f9",
-      "#d8deea",
-      "#b1bdd4",
-      "#899cbe",
-      "#6881a9",
-      "#526e9c",
-      "#436395",
-      "#355483",
-      "#2a4a76",
-      "#1d2b56",
+    indigo: [
+      "#edf2ff",
+      "#d8e1fe",
+      "#b0c2fd",
+      "#87a2fc",
+      "#6184fa",
+      "#4c6ef5",
+      "#4263f3",
+      "#3b58da",
+      "#364ec2",
+      "#3145ab",
+    ],
+    violet: [
+      "#f3f0ff",
+      "#e5dbfe",
+      "#caaffd",
+      "#b182fc",
+      "#9d5ffa",
+      "#9049f8",
+      "#8b41f8",
+      "#7936db",
+      "#6b2fc4",
+      "#5d27ad",
     ],
   },
-  fontFamily: `Fredoka One, ${fredoka.style.fontFamily}, sans-serif`,
+  fontFamily: `Fredoka, ${fredoka.style.fontFamily}, sans-serif`,
   headings: {
-    fontFamily: `Fredoka One, ${fredoka.style.fontFamily}, sans-serif`,
+    fontFamily: `Fredoka, ${fredoka.style.fontFamily}, sans-serif`,
   },
 });
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" {...mantineHtmlProps}>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript defaultColorScheme="auto" />
       </head>
       <body>
-        <MantineProvider
-          theme={theme}
-          withGlobalStyles
-          withNormalizeCSS
-          defaultColorScheme="auto"
-        >
+        <MantineProvider theme={theme} defaultColorScheme="auto">
           {children}
         </MantineProvider>
       </body>

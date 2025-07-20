@@ -1,39 +1,42 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 
+// A robust useLocalStorage hook that handles data migration and avoids infinite loops.
 export function useLocalStorage(key, initialValue) {
-  // Initialize state with the initialValue.
-  // This ensures the server and the initial client render are the same.
   const [storedValue, setStoredValue] = useState(initialValue);
 
-  // This effect runs only on the client, after the component has mounted.
+  // This effect runs only once on the client, after the component has mounted.
   useEffect(() => {
     try {
       const item = window.localStorage.getItem(key);
-      // If a value exists in localStorage, update the state to use it.
       if (item) {
-        setStoredValue(JSON.parse(item));
+        const storedData = JSON.parse(item);
+        // Deep merge the stored data with the initial value.
+        const mergedData = { ...initialValue };
+        for (const topKey in mergedData) {
+          if (storedData[topKey]) {
+            mergedData[topKey] = { ...mergedData[topKey], ...storedData[topKey] };
+          }
+        }
+        setStoredValue(mergedData);
       }
     } catch (error) {
-      // If there's an error, we default to the initial value.
-      console.error(error);
+      console.error("Error reading from localStorage", error);
     }
-  }, [key]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]); // We intentionally only run this on mount (and if the key changes).
 
   const setValue = useCallback(
     (value) => {
       try {
-        // Allow value to be a function, like the useState setter.
         const valueToStore =
           value instanceof Function ? value(storedValue) : value;
-        // Update state.
         setStoredValue(valueToStore);
-        // Persist to localStorage.
         if (typeof window !== "undefined") {
           window.localStorage.setItem(key, JSON.stringify(valueToStore));
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error writing to localStorage", error);
       }
     },
     [key, storedValue]

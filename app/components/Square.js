@@ -12,12 +12,11 @@ export function Square({ value, onSquareClick, isWinning }) {
   return (
     <Button
       onClick={onSquareClick}
-      variant={isWinning ? "filled" : "light"}
-      color={isWinning ? "yellow" : "brand"}
+      variant={isWinning ? "filled" : "default"}
+      color={isWinning ? "yellow" : "indigo"}
       mih={{ base: 80, sm: 100, md: 120 }}
       miw={{ base: 80, sm: 100, md: 120 }}
       p={0}
-      style={{ position: "relative" }}
     >
       <Box pos="absolute" top={0} left={0} right={0} bottom={0}>
         <Transition

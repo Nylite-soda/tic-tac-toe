@@ -1,25 +1,15 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
+@import "tailwindcss";
 
 /* Theme Toggle CSS Solution */
 [data-mantine-color-scheme="dark"] .theme-icon-sun {
   display: block;
 }
-
 [data-mantine-color-scheme="dark"] .theme-icon-moon {
   display: none;
 }
-
 [data-mantine-color-scheme="light"] .theme-icon-sun {
   display: none;
 }
-
 [data-mantine-color-scheme="light"] .theme-icon-moon {
   display: block;
 }
