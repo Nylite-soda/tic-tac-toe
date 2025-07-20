@@ -9,16 +9,14 @@ import {
   Group,
   Container,
   SimpleGrid,
+  SegmentedControl,
+  Box,
 } from "@mantine/core";
-import {
-  IconRefresh,
-  IconArrowBackUp,
-  IconTrophy,
-} from "@tabler/icons-react";
+import { IconRefresh, IconArrowBackUp, IconTrophy } from "@tabler/icons-react";
 import Confetti from "react-confetti";
 import { useWindowSize } from "./hooks/useWindowSize";
 import { useLocalStorage } from "./hooks/useLocalStorage";
-import { calculateWinner } from "./utils/gameLogic";
+import { calculateWinner, findAiMove } from "./utils/gameLogic";
 import { Board } from "./components/Board";
 import { Scoreboard } from "./components/Scoreboard";
 import { ThemeToggle } from "./components/ThemeToggle";
@@ -27,37 +25,59 @@ export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [modalOpened, setModalOpened] = useState(false);
   const { width, height } = useWindowSize();
+  const [gameMode, setGameMode] = useState("pvp"); // 'pvp' or 'pva'
+  const [aiLevel, setAiLevel] = useState("Rookie"); // 'Rookie', 'Challenger', 'Grandmaster'
 
-  const [score, setScore] = useLocalStorage("tic-tac-toe-score", {
-    X: 0,
-    O: 0,
-    Draw: 0,
+  const [scores, setScores] = useLocalStorage("tic-tac-toe-scores", {
+    pvp: { X: 0, O: 0, Draw: 0 },
+    pva: { X: 0, O: 0, Draw: 0 },
   });
 
   const currentSquares = history[history.length - 1];
   const { winner, line: winningLine } = calculateWinner(currentSquares);
   const isDraw = !winner && currentSquares.every(Boolean);
-  const xIsNext = (currentSquares.filter(Boolean).length) % 2 === 0;
+  const xIsNext = currentSquares.filter(Boolean).length % 2 === 0;
 
+  // Effect for handling game over and score
   useEffect(() => {
     const gameEnded = winner || isDraw;
     if (gameEnded && !modalOpened) {
       setModalOpened(true);
-      if (winner) {
-        setScore((prev) => ({ ...prev, [winner]: prev[winner] + 1 }));
-      } else {
-        setScore((prev) => ({ ...prev, Draw: prev.Draw + 1 }));
+      setScores((prevScores) => {
+        const newScores = { ...prevScores };
+        if (winner) {
+          newScores[gameMode][winner]++;
+        } else {
+          newScores[gameMode].Draw++;
+        }
+        return newScores;
+      });
+    }
+  }, [winner, isDraw, modalOpened, setScores, gameMode]);
+
+  // Effect for handling AI's turn
+  useEffect(() => {
+    if (gameMode === "pva" && !xIsNext && !winner && !isDraw) {
+      const aiMove = findAiMove(currentSquares, aiLevel);
+      if (aiMove !== -1) {
+        setTimeout(() => {
+          handlePlay(aiMove);
+        }, 500); // AI "thinks" for 500ms
       }
     }
-  }, [winner, isDraw, modalOpened, setScore]);
+  }, [history, gameMode, xIsNext, winner, isDraw, currentSquares, aiLevel]);
 
-  function handlePlay(newSquares) {
+  function handlePlay(i) {
+    if (currentSquares[i] || winner) return;
+    const newSquares = currentSquares.slice();
+    newSquares[i] = xIsNext ? "X" : "O";
     setHistory([...history, newSquares]);
   }
 
   function handleUndo() {
     if (history.length > 1 && !winner && !isDraw) {
-      setHistory(history.slice(0, -1));
+      const movesToUndo = gameMode === "pva" && history.length > 2 ? 2 : 1;
+      setHistory(history.slice(0, history.length - movesToUndo));
     }
   }
 
@@ -66,8 +86,16 @@ export default function Game() {
     setModalOpened(false);
   }
 
-  function resetScore() {
-    setScore({ X: 0, O: 0, Draw: 0 });
+  function resetScores() {
+    setScores({
+      pvp: { X: 0, O: 0, Draw: 0 },
+      pva: { X: 0, O: 0, Draw: 0 },
+    });
+  }
+
+  function handleGameModeChange(mode) {
+    setGameMode(mode);
+    restartGame();
   }
 
   let status;
@@ -124,6 +152,28 @@ export default function Game() {
             Tic-Tac-Toe
           </Title>
 
+          <Stack align="center" gap="md">
+            <SegmentedControl
+              value={gameMode}
+              onChange={handleGameModeChange}
+              data={[
+                { label: "Player vs Player", value: "pvp" },
+                { label: "Player vs AI", value: "pva" },
+              ]}
+            />
+            <Box
+            // h={42}
+            >
+              {gameMode === "pva" && (
+                <SegmentedControl
+                  value={aiLevel}
+                  onChange={setAiLevel}
+                  data={["Rookie", "Challenger", "Grandmaster"]}
+                />
+              )}
+            </Box>
+          </Stack>
+
           <SimpleGrid
             cols={{ base: 1, md: 2 }}
             spacing="xl"
@@ -137,7 +187,7 @@ export default function Game() {
               <Board
                 xIsNext={xIsNext}
                 squares={currentSquares}
-                onPlay={handlePlay}
+                onPlay={(i) => handlePlay(i)}
                 winningLine={winningLine}
               />
               <Group>
@@ -158,7 +208,11 @@ export default function Game() {
                 </Button>
               </Group>
             </Stack>
-            <Scoreboard score={score} onReset={resetScore} />
+            <Scoreboard
+              score={scores[gameMode]}
+              gameMode={gameMode}
+              onReset={resetScores}
+            />
           </SimpleGrid>
         </Stack>
       </Container>

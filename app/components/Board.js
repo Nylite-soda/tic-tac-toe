@@ -1,16 +1,8 @@
 "use client";
 import { Paper, Stack, Group } from "@mantine/core";
 import { Square } from "./Square";
-import { calculateWinner } from "../utils/gameLogic";
 
-export function Board({ squares, onPlay, winningLine, xIsNext }) {
-  function handleClick(i) {
-    if (squares[i] || calculateWinner(squares).winner) return;
-    const newSquares = squares.slice();
-    newSquares[i] = xIsNext ? "X" : "O";
-    onPlay(newSquares);
-  }
-
+export function Board({ squares, onPlay, winningLine }) {
   return (
     <Paper withBorder shadow="md" p="sm" radius="md">
       <Stack gap="xs">
@@ -22,7 +14,7 @@ export function Board({ squares, onPlay, winningLine, xIsNext }) {
                 <Square
                   key={i}
                   value={squares[i]}
-                  onSquareClick={() => handleClick(i)}
+                  onSquareClick={() => onPlay(i)}
                   isWinning={winningLine?.includes(i)}
                 />
               );
