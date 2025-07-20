@@ -6,24 +6,24 @@ A modern, playful, and responsive Tic-Tac-Toe game built with Next.js and the Ma
 
 ## Features
 
--   **Two Game Modes**: Play against another player (PvP) or challenge the AI (PvE).
--   **Three AI Difficulty Levels**:
-    -   **Rookie**: Plays randomly.
-    -   **Challenger**: Plays defensively to block wins.
-    -   **Grandmaster**: Uses the minimax algorithm to play a perfect game.
--   **Light & Dark Mode**: Seamlessly switch between themes.
--   **Score Tracking**: Scores are saved to local storage for each game mode and difficulty.
--   **Responsive Design**: Looks and works great on all screen sizes.
--   **Confetti Celebration**: A fun confetti explosion celebrates every win!
--   **Undo Moves**: Made a mistake? You can undo your last move (and the AI's).
+- **Two Game Modes**: Play against another player (PvP) or challenge the AI (PvE).
+- **Three AI Difficulty Levels**:
+  - **Rookie**: Plays randomly.
+  - **Challenger**: Plays defensively to block wins.
+  - **Grandmaster**: Uses the minimax algorithm to play a perfect game.
+- **Light & Dark Mode**: Seamlessly switch between themes.
+- **Score Tracking**: Scores are saved to local storage for each game mode and difficulty.
+- **Responsive Design**: Looks and works great on all screen sizes.
+- **Confetti Celebration**: A fun confetti explosion celebrates every win!
+- **Undo Moves**: Made a mistake? You can undo your last move (and the AI's).
 
 ## Tech Stack
 
--   **Framework**: [Next.js](https://nextjs.org/)
--   **UI Library**: [React](https://reactjs.org/)
--   **Component Library**: [Mantine](https://mantine.dev/)
--   **Icons**: [Tabler Icons](https://tabler-icons.io/)
--   **Animations**: [React Confetti](https://www.npmjs.com/package/react-confetti)
+- **Framework**: [Next.js](https://nextjs.org/)
+- **UI Library**: [React](https://reactjs.org/)
+- **Component Library**: [Mantine](https://mantine.dev/)
+- **Icons**: [Tabler Icons](https://tabler-icons.io/)
+- **Animations**: [React Confetti](https://www.npmjs.com/package/react-confetti)
 
 ## Getting Started
 
@@ -31,15 +31,16 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 ### Prerequisites
 
--   [Node.js](https://nodejs.org/) (v18 or newer recommended)
--   [pnpm](https://pnpm.io/) (or your preferred package manager like npm or yarn)
+- [Node.js](https://nodejs.org/) (v18 or newer recommended)
+- [pnpm](https://pnpm.io/) (or your preferred package manager like npm or yarn)
 
 ### Installation
 
 1.  **Clone the repository:**
+
     ```sh
-    git clone <your-repository-url>
-    cd <repository-folder>
+    git clone https://github.com/Nylite-soda/tic-tac-toe.git
+    cd tic-tac-toe
     ```
 
 2.  **Install dependencies:**
@@ -61,15 +62,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 The project follows the standard Next.js `app` directory structure.
 
--   `app/` - Contains all the core application code.
-    -   `layout.js` - The root layout, which sets up the Mantine theme.
-    -   `page.js` - The main component that holds the game logic and state.
-    -   `globals.css` - Minimal global styles, primarily for the theme toggle icon.
-    -   `components/` - All the reusable React components (`Board`, `Square`, `Scoreboard`, etc.).
-    -   `hooks/` - Custom React hooks for managing local storage and window size.
-    -   `utils/` - Utility functions, including the core game and AI logic.
--   `public/` - Static assets.
--   `*.config.mjs` - Configuration files for Next.js, PostCSS, and Tailwind.
+- `app/` - Contains all the core application code.
+  - `layout.js` - The root layout, which sets up the Mantine theme.
+  - `page.js` - The main component that holds the game logic and state.
+  - `globals.css` - Minimal global styles, primarily for the theme toggle icon.
+  - `components/` - All the reusable React components (`Board`, `Square`, `Scoreboard`, etc.).
+  - `hooks/` - Custom React hooks for managing local storage and window size.
+  - `utils/` - Utility functions, including the core game and AI logic.
+- `public/` - Static assets.
+- `*.config.mjs` - Configuration files for Next.js, PostCSS, and Tailwind.
 
 ## License
 
