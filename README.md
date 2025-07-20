@@ -2,7 +2,7 @@
 
 A modern, playful, and responsive Tic-Tac-Toe game built with Next.js and the Mantine component library. This project serves as a great example of a well-structured React application, featuring light and dark modes, multiple game modes, and a clean, engaging user interface.
 
-![Tic-Tac-Toe Gameplay Screenshot](https://raw.githubusercontent.com/gemini-testing/react-tic-tac-toe/main/public/screenshot.png)
+![Tic-Tac-Toe Gameplay Screenshot](./public/image.png)
 
 ## Features
 
